@@ -10,19 +10,19 @@ resource "aws_organizations_account" "account" {
   parent_id = data.aws_organizations_organizational_units.ou.children[index(data.aws_organizations_organizational_units.ou.children[*].name, var.account_organization_ou)].id
 }
 
-resource "time_sleep" "wait_60_seconds" {
+resource "time_sleep" "wait" {
   depends_on      = [aws_organizations_account.account]
   create_duration = "60s"
 }
 
 resource "aws_iam_account_alias" "alias" {
-  depends_on    = [time_sleep.wait_30_seconds]
+  depends_on    = [time_sleep.wait]
   provider      = aws.account
   account_alias = var.account_alias
 }
 
 resource "null_resource" "default_vpc_removal" {
-  depends_on = [time_sleep.wait_30_seconds]
+  depends_on = [time_sleep.wait]
   provisioner "local-exec" {
     interpreter = ["bash", "-c"]
     working_dir = path.module
