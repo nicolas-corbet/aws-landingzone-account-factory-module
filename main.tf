@@ -10,9 +10,9 @@ resource "aws_organizations_account" "account" {
   parent_id = data.aws_organizations_organizational_units.ou.children[index(data.aws_organizations_organizational_units.ou.children[*].name, var.account_organization_ou)].id
 }
 
-resource "time_sleep" "wait_30_seconds" {
+resource "time_sleep" "wait_60_seconds" {
   depends_on      = [aws_organizations_account.account]
-  create_duration = "30s"
+  create_duration = "60s"
 }
 
 resource "aws_iam_account_alias" "alias" {
